@@ -7,14 +7,12 @@
     "url": "https://github.com/lumine-code/bib-finder/issues"
   },
   "keywords": [
-    "tex",
-    "latex",
-    "bibliography",
-    "bib",
     "bibtex",
     "biblatex",
-    "find",
-    "cite"
+    "bibliography",
+    "citation",
+    "latex",
+    "tex"
   ],
   "version": "1.0.0",
   "license": "MIT",
