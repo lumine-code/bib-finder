@@ -1,12 +1,10 @@
-@import "ui-variables";
-
 .bib-finder .tag {
   margin-right: 5px;
   border: solid 1px;
   padding: 0.2em 0.4em;
   border-radius: 6px;
   vertical-align: baseline;
-  color: @syntax-color-constant;
+  color: var(--syntax-color-constant);
 }
 
 .bib-finder .secondary-line {

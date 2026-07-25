@@ -1,7 +1,11 @@
 {
   "name": "bib-finder",
+  "author": "lumine-code",
   "description": "Search and insert BibTeX citation keys from your bibliography files",
-  "repository": "https://github.com/asiloisad/pulsar-bib-finder",
+  "repository": "https://github.com/lumine-code/bib-finder",
+  "bugs": {
+    "url": "https://github.com/lumine-code/bib-finder/issues"
+  },
   "keywords": [
     "tex",
     "latex",
@@ -10,19 +14,24 @@
     "bibtex",
     "biblatex",
     "find",
-    "cite",
-    "python"
+    "cite"
   ],
-  "version": "1.0.1",
+  "version": "2.0.0",
   "license": "MIT",
   "engines": {
     "atom": ">=1.100.0 <2.0.0"
   },
   "main": "./lib/main",
+  "scripts": {
+    "test": "cd ../lumine && npm run test:only -- ../bib-finder/spec",
+    "lint": "eslint . --max-warnings 0",
+    "format": "prettier --write .",
+    "format:check": "prettier --check ."
+  },
   "activationCommands": {
     "atom-workspace": [
       "bib-finder:cite",
-      "bib-finder:cite-from-local   ",
+      "bib-finder:cite-from-local",
       "bib-finder:cite-from-source-1",
       "bib-finder:cite-from-source-2",
       "bib-finder:cite-from-source-3",
@@ -44,77 +53,65 @@
     }
   },
   "dependencies": {
-    "bibtex-parse": "^2.1.0",
-    "glob": "^13.0.1",
-    "@asiloisad/select-list": "^1.6.0"
+    "@lumine-code/select-list": "https://github.com/lumine-code/select-list.git#fbbc2d9660db6a2ff676c7a3baf7536f96ec34e6",
+    "bibtex-parse": "^2.1.0"
   },
   "configSchema": {
     "bibLocal": {
-      "order": 1,
       "title": "Find local bibliography files",
       "description": "Find all `.bib' files in open projects and try to parse them.",
       "type": "boolean",
       "default": true
     },
     "allowDuplicate": {
-      "order": 2,
       "title": "Allow duplicate keys",
       "description": "Allow duplicate keys in the list, otherwise only the first occurrence of the key will be displayed.",
       "type": "boolean",
       "default": true
     },
     "reloadAlways": {
-      "order": 3,
       "title": "Always reload keys from all `.bib` sources",
       "description": "If not, you will need to manually run the `bib-finder:cache' command to re-cache the sources.",
       "type": "boolean",
       "default": false
     },
     "showSource": {
-      "order": 4,
       "title": "Show source path",
       "description": "Show the path of the source `.bib' file for each entry.",
       "type": "boolean",
       "default": true
     },
     "bibPaths": {
-      "order": 5,
       "title": "Bibliography sources as single path",
       "description": "Absolute paths to the bibliography files.",
       "type": "object",
       "properties": {
         "path1": {
-          "order": 1,
           "title": "Bibliography source no. 1",
           "type": "string",
           "default": ""
         },
         "path2": {
-          "order": 2,
           "title": "Bibliography source no. 2",
           "type": "string",
           "default": ""
         },
         "path3": {
-          "order": 3,
           "title": "Bibliography source no. 3",
           "type": "string",
           "default": ""
         },
         "path4": {
-          "order": 4,
           "title": "Bibliography source no. 4",
           "type": "string",
           "default": ""
         },
         "path5": {
-          "order": 5,
           "title": "Bibliography source no. 5",
           "type": "string",
           "default": ""
         },
         "array": {
-          "order": 6,
           "title": "Array of sources",
           "description": "Array of paths, separated by commas.",
           "type": "array",
@@ -125,5 +122,13 @@
         }
       }
     }
+  },
+  "devDependencies": {
+    "@eslint/js": "^10.0.1",
+    "eslint": "^10.8.0",
+    "eslint-config-prettier": "^10.1.8",
+    "eslint-plugin-n": "^18.2.2",
+    "globals": "^17.7.0",
+    "prettier": "^3.9.6"
   }
 }
