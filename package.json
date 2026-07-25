@@ -1,7 +1,7 @@
 {
   "name": "bib-finder",
   "author": "lumine-code",
-  "description": "Search and insert BibTeX citation keys from your bibliography files",
+  "description": "Search and insert BibTeX citation keys from bibliography files.",
   "repository": "https://github.com/lumine-code/bib-finder",
   "bugs": {
     "url": "https://github.com/lumine-code/bib-finder/issues"

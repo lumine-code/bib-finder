@@ -1,6 +1,8 @@
 # bib-finder
 
-Search and insert BibTeX citation keys from your bibliography files. Supports multiple `.bib` files with fuzzy search and works in any file scope.
+Search and insert BibTeX citation keys from bibliography files.
+
+Supports multiple `.bib` files with fuzzy search and works in any file scope.
 
 ## Features
 
