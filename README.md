@@ -78,7 +78,7 @@ The citation list can be restyled from your stylesheet, e.g.:
 
 ## Services
 
-- **atom.file-icons** (`^1.0.0`): consumed to decorate each entry's source path with its file-type icon.
+- **file-icons.classes** (`^1.0.0`): consumed to decorate each entry's source path with its file-type icon.
 
 ## Contributing
 
