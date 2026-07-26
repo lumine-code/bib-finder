@@ -43,13 +43,6 @@
       "bib-finder:open-source-5"
     ]
   },
-  "consumedServices": {
-    "icons.class": {
-      "versions": {
-        "^1.0.0": "consumeIconsClass"
-      }
-    }
-  },
   "dependencies": {
     "@lumine-code/select-list": "https://github.com/lumine-code/select-list.git#fbbc2d9660db6a2ff676c7a3baf7536f96ec34e6",
     "bibtex-parse": "^2.1.0"

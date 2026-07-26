@@ -76,10 +76,6 @@ The citation list can be restyled from your stylesheet, e.g.:
 }
 ```
 
-## Services
-
-- **[icons.class](https://lumine-code.github.io/docs.html#services/icons.class)** (`^1.0.0`): consumed to decorate each entry's source path with its file-type icon.
-
 ## Contributing
 
 Got ideas to make this package better, found a bug, or want to help add new features? Just drop your thoughts on GitHub. Any feedback is welcome!
