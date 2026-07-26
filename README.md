@@ -10,7 +10,7 @@ Supports multiple `.bib` files with fuzzy search and works in any file scope.
 - **Multiple files**: use global or project-local `.bib` files.
 - **Fast crawling**: project `.bib` files are discovered with the editor's bundled ripgrep.
 - **Flexible insertion**: insert bare keys, `\cite{}`, or `\cite[]{}` formats.
-- **Type filtering**: search by entry type with `@` or by key with `#`.
+- **Type filtering**: the entry type is appended to the search text, so `@book` narrows the list to books.
 
 ## Installation
 
