@@ -78,7 +78,7 @@ The citation list can be restyled from your stylesheet, e.g.:
 
 ## Services
 
-- **icons.class** (`^1.0.0`): consumed to decorate each entry's source path with its file-type icon.
+- **[icons.class](https://lumine-code.github.io/docs.html#services/icons.class)** (`^1.0.0`): consumed to decorate each entry's source path with its file-type icon.
 
 ## Contributing
 
