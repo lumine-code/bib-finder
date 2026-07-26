@@ -46,7 +46,7 @@
   "consumedServices": {
     "icons.class": {
       "versions": {
-        "^1.0.0": "consumeClassIcons"
+        "^1.0.0": "consumeIconsClass"
       }
     }
   },
