@@ -173,6 +173,26 @@ describe("bib-finder", () => {
       expect(keys()).toEqual(["stng51"]);
     });
 
+    // The old view kept one query editor alive for the module's lifetime and
+    // only selected its contents on show, so a reopened list still carried the
+    // last query.
+    it("carries the last query into the next opening", async () => {
+      await openList();
+      modals.setQuery("elasticity");
+      await modals.settle();
+      await openList(); // closes
+      await openList(); // and back
+
+      expect(modals.queryText()).toBe("elasticity");
+      expect(keys()).toEqual(["stng51"]);
+
+      // The kernel keys the preserved query on the view id and holds it on the
+      // manager, which `AtomEnvironment.reset()` does not clear, so leave the
+      // field empty rather than leaking "elasticity" into the next spec.
+      modals.setQuery("");
+      await modals.settle();
+    });
+
     it("inserts the bare key on confirm", async () => {
       await openList();
       await modals.confirmItem((item) => item.key === "stng51");
