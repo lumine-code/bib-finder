@@ -26,12 +26,12 @@ Commands available in `atom-workspace`:
 - `bib-finder:cache`: re-cache entries from the `.bib` sources,
 - `bib-finder:open-source-N`: open source no. N bib file.
 
-Commands available in `.bib-finder`:
+Commands available in `atom-modal[data-modal-view="bib-finder.citations"]`:
 
-- `select-list:name`: insert `<key>`,
-- `select-list:cite`: insert `\cite{<key>}`,
-- `select-list:square`: insert `\cite[]{<key>}`,
-- `select-list:update`: manually update list.
+- `modals:name`: insert `<key>`,
+- `modals:cite`: insert `\cite{<key>}`,
+- `modals:square`: insert `\cite[]{<key>}`,
+- `modals:update`: manually update list.
 
 ## Usage
 
