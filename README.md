@@ -26,12 +26,12 @@ Commands available in `atom-workspace`:
 - `bib-finder:cache`: re-cache entries from the `.bib` sources,
 - `bib-finder:open-source-N`: open source no. N bib file.
 
-Commands available in `.bib-finder`:
+Commands available in `.bib-finder`, all listed with their keybindings in the item-actions list (F12):
 
-- `select-list:name`: insert `<key>`,
-- `select-list:cite`: insert `\cite{<key>}`,
-- `select-list:square`: insert `\cite[]{<key>}`,
-- `select-list:update`: manually update list.
+- `bib-finder:insert-key`: insert `<key>`,
+- `bib-finder:insert-cite`: insert `\cite{<key>}`,
+- `bib-finder:insert-cite-square`: insert `\cite[]{<key>}` with the cursor between the brackets,
+- `bib-finder:rebuild-cache`: reload entries from the `.bib` sources.
 
 ## Usage
 
