@@ -65,7 +65,7 @@ Here's an example of the content in a bibliography file:
 
 The citation list can be restyled from your stylesheet, e.g.:
 
-```less
+```css
 .bib-finder {
   .tag {
     color: var(--text-color-info);
