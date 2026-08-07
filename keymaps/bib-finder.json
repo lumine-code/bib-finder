@@ -1,5 +1,6 @@
 {
-  "atom-text-editor": {
+  // :not([mini]) because these insert a citation into the file.
+  "atom-text-editor:not([mini])": {
     "f9": "bib-finder:cite",
     "ctrl-f9": "bib-finder:open-source-1"
   },
