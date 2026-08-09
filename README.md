@@ -18,7 +18,7 @@ To install `bib-finder` search for _bib-finder_ in the Install pane of the Lumin
 
 ## Commands
 
-Commands available in `atom-workspace`:
+Commands available in `lumine-workspace`:
 
 - `bib-finder:cite`: open citation list,
 - `bib-finder:cite-from-local`: open citation list from local `.bib` files only,

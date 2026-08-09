@@ -2,16 +2,16 @@ describe("bib-finder item actions", () => {
   let main;
 
   beforeEach(async () => {
-    jasmine.attachToDOM(atom.views.getView(atom.workspace));
+    jasmine.attachToDOM(lumine.views.getView(lumine.workspace));
     // The package activates on its commands, so dispatch one to trigger it;
     // activation also loads the package keymap the actions list reads.
-    const activation = atom.packages.activatePackage("bib-finder");
-    atom.commands.dispatch(atom.views.getView(atom.workspace), "bib-finder:cache");
+    const activation = lumine.packages.activatePackage("bib-finder");
+    lumine.commands.dispatch(lumine.views.getView(lumine.workspace), "bib-finder:cache");
     main = (await activation).mainModule;
   });
 
   afterEach(async () => {
-    await atom.packages.deactivatePackage("bib-finder");
+    await lumine.packages.deactivatePackage("bib-finder");
   });
 
   it("derives its actions from the command registrations and the keymap", () => {
@@ -45,7 +45,7 @@ describe("bib-finder item actions", () => {
     await main.selectList.showItemActions();
 
     expect(main.selectList.itemActionsList.isVisible()).toBeTruthy();
-    expect(atom.workspace.getModalTrail()).toEqual(["Bibliography", "Actions"]);
+    expect(lumine.workspace.getModalTrail()).toEqual(["Bibliography", "Actions"]);
     // The actions list wears the package class, so the package keymap
     // resolves action keystrokes inside it too.
     expect(main.selectList.itemActionsList.element.classList.contains("bib-finder")).toBe(true);

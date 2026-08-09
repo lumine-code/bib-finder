@@ -37,7 +37,7 @@
     "format:check": "prettier --check ."
   },
   "activationCommands": {
-    "atom-workspace": [
+    "lumine-workspace": [
       "bib-finder:cite",
       "bib-finder:cite-from-local",
       "bib-finder:cite-from-source-1",

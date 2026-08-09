@@ -40,17 +40,17 @@ describe("bib-finder", () => {
     fs.mkdirSync(path.join(tempDir, ".git"));
     fs.writeFileSync(path.join(tempDir, ".git", "c.bib"), BOOK_GIT);
     fs.writeFileSync(path.join(tempDir, "notes.txt"), "not a bibliography");
-    atom.project.setPaths([tempDir]);
+    lumine.project.setPaths([tempDir]);
 
     // The package defers activation until one of its commands is dispatched.
-    const workspaceElement = atom.views.getView(atom.workspace);
-    const activation = atom.packages.activatePackage("bib-finder");
-    atom.commands.dispatch(workspaceElement, "bib-finder:open-source-1");
+    const workspaceElement = lumine.views.getView(lumine.workspace);
+    const activation = lumine.packages.activatePackage("bib-finder");
+    lumine.commands.dispatch(workspaceElement, "bib-finder:open-source-1");
     mainModule = (await activation).mainModule;
   });
 
   afterEach(() => {
-    atom.project.setPaths([]);
+    lumine.project.setPaths([]);
     try {
       // Retries because Windows keeps a directory non-empty until the last handle on a
       // child closes, and `force` swallows only ENOENT.
@@ -84,14 +84,14 @@ describe("bib-finder", () => {
     });
 
     it("drops duplicate keys when allowDuplicate is disabled", async () => {
-      atom.config.set("bib-finder.allowDuplicate", false);
+      lumine.config.set("bib-finder.allowDuplicate", false);
       await mainModule.cache("local");
       const keys = mainModule.items.map((item) => item.key).sort();
       expect(keys).toEqual(["fhck07", "stng51"]);
     });
 
     it("reads a configured global source only", async () => {
-      atom.config.set("bib-finder.bibPaths.path1", path.join(tempDir, "sub", "b.bib"));
+      lumine.config.set("bib-finder.bibPaths.path1", path.join(tempDir, "sub", "b.bib"));
       await mainModule.cache(1);
       expect(mainModule.items.map((item) => item.key)).toEqual(["fhck07"]);
       expect(mainModule.items[0].type).toBe("article");
