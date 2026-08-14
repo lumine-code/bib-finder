@@ -14,7 +14,7 @@ Supports multiple `.bib` files with fuzzy search and works in any file scope.
 
 ## Installation
 
-To install `bib-finder` search for _bib-finder_ in the Install pane of the Lumine settings or run `lumine --install lumine-code/bib-finder`.
+To install `bib-finder` search for it in the Install pane of the Lumine settings, or run the command `lumine --install lumine-code/bib-finder`.
 
 ## Commands
 
