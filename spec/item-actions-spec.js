@@ -20,7 +20,7 @@ describe("bib-finder item actions", () => {
 
     const insertCite = byCommand.get("bib-finder:insert-cite");
     expect(insertCite.name).toBe("Insert Cite");
-    expect(insertCite.description).toBe("Insert the key wrapped in a LaTeX \\cite{…} command");
+    expect(insertCite.description).toBe("Insert the key wrapped in a LaTeX \\cite{…} command.");
     expect(insertCite.keystrokes).toEqual(["alt-enter"]);
 
     expect(byCommand.get("bib-finder:insert-cite-square").keystrokes).toEqual(["ctrl-enter"]);
