@@ -46,6 +46,7 @@
       "bib-finder:cite-from-source-4",
       "bib-finder:cite-from-source-5",
       "bib-finder:cache",
+      "bib-finder:clear-recent",
       "bib-finder:open-source-1",
       "bib-finder:open-source-2",
       "bib-finder:open-source-3",
@@ -80,6 +81,13 @@
       "description": "Show the path of the source `.bib' file for each entry.",
       "type": "boolean",
       "default": true
+    },
+    "recentCount": {
+      "title": "Number of Recent Entries",
+      "description": "How many recently used entries to keep at the top of the list.",
+      "type": "integer",
+      "minimum": 0,
+      "default": 10
     },
     "bibPaths": {
       "title": "Bibliography sources as single path",

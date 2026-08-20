@@ -11,6 +11,7 @@ Supports multiple `.bib` files with fuzzy search and works in any file scope.
 - **Fast crawling**: project `.bib` files are discovered with the editor's bundled ripgrep.
 - **Flexible insertion**: insert bare keys, `\cite{}`, or `\cite[]{}` formats.
 - **Type filtering**: the entry type is appended to the search text, so `@book` narrows the list to books.
+- **Recently used first**: keeps the entries you inserted at the top of the unfiltered list, ruled off from the rest.
 
 ## Installation
 
@@ -24,14 +25,16 @@ Commands available in `lumine-workspace`:
 - `bib-finder:cite-from-local`: open citation list from local `.bib` files only,
 - `bib-finder:cite-from-source-N`: open citation list from source no. N,
 - `bib-finder:cache`: re-cache entries from the `.bib` sources,
-- `bib-finder:open-source-N`: open source no. N bib file.
+- `bib-finder:open-source-N`: open source no. N bib file,
+- `bib-finder:clear-recent`: forget the recently used entries.
 
 Commands available in `.bib-finder`, all listed with their keybindings in the item-actions list (F12):
 
 - `bib-finder:insert-key`: insert `<key>`,
 - `bib-finder:insert-cite`: insert `\cite{<key>}`,
 - `bib-finder:insert-cite-square`: insert `\cite[]{<key>}` with the cursor between the brackets,
-- `bib-finder:rebuild-cache`: reload entries from the `.bib` sources.
+- `bib-finder:rebuild-cache`: reload entries from the `.bib` sources,
+- `bib-finder:remove-from-recent`: drop the selected entry from the recent section, offered only while a recent one is selected.
 
 ## Usage
 
