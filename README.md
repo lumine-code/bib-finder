@@ -71,7 +71,7 @@ The citation list can be restyled from your stylesheet, e.g.:
 ```css
 .bib-finder {
   .tag {
-    color: var(--text-color-info);
+    color: var(--accent-only-text-color);
   }
   .secondary-line {
     color: var(--text-color-subtle);
