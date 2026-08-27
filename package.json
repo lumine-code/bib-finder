@@ -64,6 +64,15 @@
       "type": "boolean",
       "default": true
     },
+    "ignoredNames": {
+      "title": "Ignored Names",
+      "description": "Additional glob patterns excluded while finding local bibliography files.",
+      "type": "array",
+      "items": {
+        "type": "string"
+      },
+      "default": []
+    },
     "allowDuplicate": {
       "title": "Allow duplicate keys",
       "description": "Allow duplicate keys in the list, otherwise only the first occurrence of the key will be displayed.",

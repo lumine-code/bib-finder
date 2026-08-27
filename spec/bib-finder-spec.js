@@ -39,8 +39,12 @@ describe("bib-finder", () => {
     fs.writeFileSync(path.join(tempDir, "sub", "b.bib"), BOOK_B);
     fs.mkdirSync(path.join(tempDir, ".git"));
     fs.writeFileSync(path.join(tempDir, ".git", "c.bib"), BOOK_GIT);
+    fs.mkdirSync(path.join(tempDir, "ignored"));
+    fs.writeFileSync(path.join(tempDir, "ignored", "c.bib"), BOOK_GIT);
+    fs.writeFileSync(path.join(tempDir, ".gitignore"), "ignored/\n");
     fs.writeFileSync(path.join(tempDir, "notes.txt"), "not a bibliography");
     lumine.project.setPaths([tempDir]);
+    lumine.config.set("core.excludeVcsIgnoredPaths", true);
 
     // The package defers activation until one of its commands is dispatched.
     const workspaceElement = lumine.views.getView(lumine.workspace);
@@ -65,6 +69,22 @@ describe("bib-finder", () => {
       const files = await mainModule.crawlBibFiles(tempDir);
       const normalized = files.map((fPath) => path.normalize(fPath)).sort();
       expect(normalized).toEqual([path.join(tempDir, "a.bib"), path.join(tempDir, "sub", "b.bib")]);
+    });
+
+    it("adds package ignored names to the editor's crawl policy", async () => {
+      lumine.config.set("bib-finder.ignoredNames", ["sub"]);
+      const files = await mainModule.crawlBibFiles();
+      expect(files.map((filePath) => path.normalize(filePath))).toEqual([
+        path.join(tempDir, "a.bib"),
+      ]);
+    });
+
+    it("follows the editor's VCS discovery policy", async () => {
+      lumine.config.set("core.excludeVcsIgnoredPaths", false);
+      const files = await mainModule.crawlBibFiles();
+      expect(files.map((filePath) => path.normalize(filePath))).toContain(
+        path.join(tempDir, "ignored", "c.bib"),
+      );
     });
   });
 
