@@ -28,7 +28,7 @@ Commands available in `lumine-workspace`:
 - `bib-finder:open-source-N`: open source no. N bib file,
 - `bib-finder:clear-recent`: forget the recently used entries.
 
-Commands available in `.bib-finder`, all listed with their keybindings in the item-actions list (F12):
+Commands available in `.bib-finder`:
 
 - `bib-finder:insert-key`: insert `<key>`,
 - `bib-finder:insert-cite`: insert `\cite{<key>}`,
