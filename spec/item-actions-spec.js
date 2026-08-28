@@ -15,6 +15,7 @@ describe("bib-finder item actions", () => {
   });
 
   it("derives its actions from the command registrations and the keymap", () => {
+    spyOn(main.selectList, "getSelectedItem").and.returnValue({ key: "plain" });
     const actions = main.selectList.itemActions();
     const byCommand = new Map(actions.map((action) => [action.command, action]));
 
@@ -25,8 +26,7 @@ describe("bib-finder item actions", () => {
 
     expect(byCommand.get("bib-finder:insert-cite-square").keystrokes).toEqual(["ctrl-enter"]);
     expect(byCommand.get("bib-finder:rebuild-cache").keystrokes).toEqual(["f5"]);
-    // The bare insert is what Enter's confirm does, so it carries no binding.
-    expect(byCommand.get("bib-finder:insert-key").keystrokes).toEqual([]);
+    expect(byCommand.get("bib-finder:insert-key").keystrokes).toEqual(["enter"]);
 
     // Every action explains itself with more than a restated title.
     for (const action of actions) {
@@ -37,6 +37,23 @@ describe("bib-finder item actions", () => {
     expect(byCommand.has("core:confirm")).toBe(false);
     expect(byCommand.has("select-list:actions")).toBe(false);
     expect(byCommand.has("bib-finder:cite")).toBe(false);
+    expect(byCommand.has("bib-finder:clear-recent")).toBe(false);
+  });
+
+  it("keeps list actions available without a match and hides clear when history is empty", () => {
+    spyOn(main.selectList, "getSelectedItem").and.returnValue(null);
+
+    let actions = main.selectList.itemActions();
+    expect(actions.map((action) => action.command)).toEqual(["bib-finder:rebuild-cache"]);
+
+    main.recentlyUsed = ["recent"];
+    actions = main.selectList.itemActions();
+    const clear = actions.find((action) => action.command === "bib-finder:clear-recent");
+    expect(clear.scope).toBe("list");
+    expect(actions.map((action) => action.command)).toEqual([
+      "bib-finder:rebuild-cache",
+      "bib-finder:clear-recent",
+    ]);
   });
 
   it("shows the actions as a flow step and runs one against the citation list", async () => {
@@ -57,7 +74,7 @@ describe("bib-finder item actions", () => {
     main.selectList.itemActionsList.selectIndex(index);
     main.selectList.itemActionsList.confirmSelection();
 
-    expect(spy).toHaveBeenCalled();
+    expect(spy).toHaveBeenCalledWith(main.id);
     expect(main.selectList.isVisible()).toBeTruthy();
     expect(main.selectList.itemActionsList.isVisible()).toBeFalsy();
   });
