@@ -103,30 +103,36 @@
       "description": "Absolute paths to the bibliography files.",
       "type": "object",
       "properties": {
-        "path1": {
-          "title": "Bibliography source no. 1",
-          "type": "string",
-          "default": ""
-        },
-        "path2": {
-          "title": "Bibliography source no. 2",
-          "type": "string",
-          "default": ""
-        },
-        "path3": {
-          "title": "Bibliography source no. 3",
-          "type": "string",
-          "default": ""
-        },
-        "path4": {
-          "title": "Bibliography source no. 4",
-          "type": "string",
-          "default": ""
-        },
-        "path5": {
-          "title": "Bibliography source no. 5",
-          "type": "string",
-          "default": ""
+        "path": {
+          "title": "Bibliography sources",
+          "type": "object",
+          "properties": {
+            "no1": {
+              "title": "Bibliography source no. 1",
+              "type": "string",
+              "default": ""
+            },
+            "no2": {
+              "title": "Bibliography source no. 2",
+              "type": "string",
+              "default": ""
+            },
+            "no3": {
+              "title": "Bibliography source no. 3",
+              "type": "string",
+              "default": ""
+            },
+            "no4": {
+              "title": "Bibliography source no. 4",
+              "type": "string",
+              "default": ""
+            },
+            "no5": {
+              "title": "Bibliography source no. 5",
+              "type": "string",
+              "default": ""
+            }
+          }
         },
         "array": {
           "title": "Array of sources",

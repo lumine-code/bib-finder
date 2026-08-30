@@ -111,7 +111,7 @@ describe("bib-finder", () => {
     });
 
     it("reads a configured global source only", async () => {
-      lumine.config.set("bib-finder.bibPaths.path1", path.join(tempDir, "sub", "b.bib"));
+      lumine.config.set("bib-finder.bibPaths.path.no1", path.join(tempDir, "sub", "b.bib"));
       await mainModule.cache(1);
       expect(mainModule.items.map((item) => item.key)).toEqual(["fhck07"]);
       expect(mainModule.items[0].type).toBe("article");
