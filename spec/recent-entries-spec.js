@@ -101,7 +101,7 @@ describe("bib-finder recent entries", () => {
     main.recordRecent(entry("stng51"));
     const selectList = await showList();
 
-    selectList.refs.queryEditor.setText("Hartmann");
+    selectList.getQueryEditor().setText("Hartmann");
     await lumine.views.getNextUpdatePromise();
 
     expect(selectList.element.querySelector(".select-list-separator")).toBeNull();
