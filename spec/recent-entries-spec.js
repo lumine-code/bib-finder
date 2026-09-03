@@ -58,7 +58,7 @@ describe("bib-finder recent entries", () => {
   }
 
   async function showList() {
-    await main.selectList.show();
+    await main.selectListHost.show();
     return main.selectList;
   }
 
@@ -116,7 +116,7 @@ describe("bib-finder recent entries", () => {
     await selectList.runAction("select-list:remove-recent");
 
     expect(selectList.getRecentItemIds()).toEqual([entry("fhck07").id]);
-    expect(selectList.isVisible()).toBe(true);
+    expect(main.selectListHost.isVisible()).toBe(true);
     expect(selectList.getSelectedItem().key).toBe("stng51");
   });
 

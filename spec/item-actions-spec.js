@@ -15,6 +15,7 @@ describe("bib-finder item actions", () => {
   });
 
   it("derives its actions from the command registrations and the keymap", async () => {
+    main.selectListHost.getPanel();
     const item = {
       id: "plain\u0000source.bib\u00000",
       key: "plain",
@@ -65,9 +66,9 @@ describe("bib-finder item actions", () => {
   });
 
   it("shows the actions as a flow step and runs one against the citation list", async () => {
-    await main.selectList.show();
+    await main.selectListHost.show();
 
-    await main.selectList.showActions();
+    await main.selectListHost.showActions();
 
     expect(lumine.workspace.getModalTrail()).toEqual(["Bibliography", "Actions"]);
 
@@ -76,6 +77,6 @@ describe("bib-finder item actions", () => {
     await main.selectList.runAction("bib-finder:rebuild-cache");
 
     expect(spy).toHaveBeenCalledWith(main.id);
-    expect(main.selectList.isVisible()).toBeTruthy();
+    expect(main.selectListHost.isVisible()).toBeTruthy();
   });
 });
