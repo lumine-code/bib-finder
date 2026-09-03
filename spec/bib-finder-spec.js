@@ -53,7 +53,8 @@ describe("bib-finder", () => {
     mainModule = (await activation).mainModule;
   });
 
-  afterEach(() => {
+  afterEach(async () => {
+    await lumine.packages.deactivatePackage("bib-finder");
     lumine.project.setPaths([]);
     try {
       // Retries because Windows keeps a directory non-empty until the last handle on a

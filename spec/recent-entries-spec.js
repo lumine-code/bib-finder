@@ -33,14 +33,14 @@ describe("bib-finder recent entries", () => {
     const activation = lumine.packages.activatePackage("bib-finder");
     lumine.commands.dispatch(workspaceElement, "bib-finder:clear-recent");
     main = (await activation).mainModule;
-    main.clearRecent();
+    await main.selectList.clearRecentItems();
 
     // The entries come from the user's own sources, so the specs seed the
-    // cache directly. `nextId` matches what was cached, so `willShow` finds
+    // cache directly. `nextId` matches what was cached, so the snapshot source finds
     // the list current and leaves these rows alone.
     await main.cache("local");
     main.nextId = "local";
-    await main.selectList.update({ items: main.items, recentIds: main.recentlyUsed });
+    await main.selectList.setItems(main.items);
   });
 
   afterEach(async () => {
@@ -58,18 +58,17 @@ describe("bib-finder recent entries", () => {
   }
 
   async function showList() {
-    main.selectList.show();
-    await main.selectList.update({});
+    await main.selectList.show();
     return main.selectList;
   }
 
   it("keeps the entries it inserted at the top, ruled off from the rest", async () => {
-    main.recordRecent(entry("stng51"));
+    await main.selectList.recordRecentItem(entry("stng51"));
 
     const selectList = await showList();
 
-    expect(selectList.items[0].key).toBe("stng51");
-    const separator = selectList.element.querySelector(".select-list-separator");
+    expect(selectList.getFilteredItems()[0].key).toBe("stng51");
+    const separator = selectList.getElement().querySelector(".select-list-separator");
     expect(separator.previousElementSibling.textContent).toContain("stng51");
     expect(separator.nextElementSibling.textContent).not.toContain("stng51");
   });
@@ -80,11 +79,11 @@ describe("bib-finder recent entries", () => {
     const selectList = await showList();
     await selectList.selectItem(entry("stng51"));
 
-    main.performAction("square");
+    await selectList.runAction("bib-finder:insert-cite-square");
 
     expect(editor.getText()).toBe("\\cite[]{stng51}");
-    expect(main.recentlyUsed).toEqual(["stng51"]);
-    expect(main.serialize()).toEqual({ recentlyUsed: ["stng51"] });
+    expect(selectList.getRecentItemIds()).toEqual([entry("stng51").id]);
+    expect(main.serialize()).toEqual({ recentlyUsed: [entry("stng51").id] });
   });
 
   it("records nothing when there is no editor to insert into", async () => {
@@ -92,76 +91,75 @@ describe("bib-finder recent entries", () => {
     const selectList = await showList();
     await selectList.selectItem(entry("stng51"));
 
-    main.performAction("name");
+    const result = await selectList.runAction("bib-finder:insert-key");
 
-    expect(main.recentlyUsed).toEqual([]);
+    expect(result.status).toBe("disabled");
+    expect(selectList.getRecentItemIds()).toEqual([]);
   });
 
   it("stands the section down under a query", async () => {
-    main.recordRecent(entry("stng51"));
+    await main.selectList.recordRecentItem(entry("stng51"));
     const selectList = await showList();
 
     selectList.getQueryEditor().setText("Hartmann");
     await lumine.views.getNextUpdatePromise();
 
-    expect(selectList.element.querySelector(".select-list-separator")).toBeNull();
+    expect(selectList.getElement().querySelector(".select-list-separator")).toBeNull();
   });
 
   it("drops one entry from the section without closing the list", async () => {
-    main.recordRecent(entry("fhck07"));
-    main.recordRecent(entry("stng51"));
+    await main.selectList.recordRecentItem(entry("fhck07"));
+    await main.selectList.recordRecentItem(entry("stng51"));
     const selectList = await showList();
     await selectList.selectItem(entry("stng51"));
 
-    lumine.commands.dispatch(selectList.element, "bib-finder:remove-from-recent");
-    await lumine.views.getNextUpdatePromise();
+    await selectList.runAction("select-list:remove-recent");
 
-    expect(main.recentlyUsed).toEqual(["fhck07"]);
+    expect(selectList.getRecentItemIds()).toEqual([entry("fhck07").id]);
     expect(selectList.isVisible()).toBe(true);
     expect(selectList.getSelectedItem().key).toBe("stng51");
   });
 
   it("offers the action only while a recent entry is selected", async () => {
-    main.recordRecent(entry("stng51"));
+    await main.selectList.recordRecentItem(entry("stng51"));
     const selectList = await showList();
 
     await selectList.selectItem(entry("stng51"));
-    let actions = selectList.itemActions().map((action) => action.command);
-    expect(actions).toContain("bib-finder:remove-from-recent");
+    let actions = selectList.getAvailableActions().map((action) => action.command);
+    expect(actions).toContain("select-list:remove-recent");
 
     await selectList.selectItem(entry("fhck07"));
-    actions = selectList.itemActions().map((action) => action.command);
-    expect(actions).not.toContain("bib-finder:remove-from-recent");
+    actions = selectList.getAvailableActions().map((action) => action.command);
+    expect(actions).not.toContain("select-list:remove-recent");
     // The rest of the package's actions are unaffected by the filter.
     expect(actions).toContain("bib-finder:insert-cite");
   });
 
-  it("caps the list at the configured count", () => {
+  it("caps the list at the configured count", async () => {
     lumine.config.set("bib-finder.recentCount", 1);
-    main.recordRecent(entry("fhck07"));
-    main.recordRecent(entry("stng51"));
+    await main.selectList.recordRecentItem(entry("fhck07"));
+    await main.selectList.recordRecentItem(entry("stng51"));
 
-    expect(main.recentlyUsed).toEqual(["stng51"]);
+    expect(main.selectList.getRecentItemIds()).toEqual([entry("stng51").id]);
   });
 
   it("forgets everything on clear-recent", async () => {
-    main.recordRecent(entry("stng51"));
+    await main.selectList.recordRecentItem(entry("stng51"));
     const selectList = await showList();
 
-    lumine.commands.dispatch(workspaceElement, "bib-finder:clear-recent");
-    await lumine.views.getNextUpdatePromise();
+    await lumine.commands.dispatch(workspaceElement, "bib-finder:clear-recent");
 
-    expect(main.recentlyUsed).toEqual([]);
-    expect(selectList.element.querySelector(".select-list-separator")).toBeNull();
+    expect(selectList.getRecentItemIds()).toEqual([]);
+    expect(selectList.getElement().querySelector(".select-list-separator")).toBeNull();
   });
 
-  it("restores what it serialized", () => {
-    main.recordRecent(entry("stng51"));
+  it("restores what it serialized", async () => {
+    await main.selectList.recordRecentItem(entry("stng51"));
     const state = main.serialize();
-    main.deactivate();
+    await main.deactivate();
 
     main.activate(state);
 
-    expect(main.recentlyUsed).toEqual(["stng51"]);
+    expect(main.selectList.getRecentItemIds()).toEqual([state.recentlyUsed[0]]);
   });
 });
