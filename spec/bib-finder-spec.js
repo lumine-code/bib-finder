@@ -112,10 +112,24 @@ describe("bib-finder", () => {
     });
 
     it("reads a configured global source only", async () => {
-      lumine.config.set("bib-finder.bibPaths.path.no1", path.join(tempDir, "sub", "b.bib"));
+      lumine.config.set("bib-finder.path-1", path.join(tempDir, "sub", "b.bib"));
       await mainModule.cache(1);
       expect(mainModule.items.map((item) => item.key)).toEqual(["fhck07"]);
       expect(mainModule.items[0].type).toBe("article");
+    });
+
+    it("reads every source from the configured paths array", async () => {
+      lumine.config.set("bib-finder.bibLocal", false);
+      lumine.config.set("bib-finder.paths", [
+        path.join(tempDir, "a.bib"),
+        path.join(tempDir, "sub", "b.bib"),
+      ]);
+      await mainModule.cache();
+      expect(mainModule.items.map((item) => item.key).sort()).toEqual([
+        "fhck07",
+        "fhck07",
+        "stng51",
+      ]);
     });
   });
 });

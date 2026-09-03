@@ -98,52 +98,44 @@
       "minimum": 0,
       "default": 10
     },
-    "bibPaths": {
-      "title": "Bibliography sources as single path",
-      "description": "Absolute paths to the bibliography files.",
-      "type": "object",
-      "properties": {
-        "path": {
-          "title": "Bibliography sources",
-          "type": "object",
-          "properties": {
-            "no1": {
-              "title": "Bibliography source no. 1",
-              "type": "string",
-              "default": ""
-            },
-            "no2": {
-              "title": "Bibliography source no. 2",
-              "type": "string",
-              "default": ""
-            },
-            "no3": {
-              "title": "Bibliography source no. 3",
-              "type": "string",
-              "default": ""
-            },
-            "no4": {
-              "title": "Bibliography source no. 4",
-              "type": "string",
-              "default": ""
-            },
-            "no5": {
-              "title": "Bibliography source no. 5",
-              "type": "string",
-              "default": ""
-            }
-          }
-        },
-        "array": {
-          "title": "Array of sources",
-          "description": "Array of paths, separated by commas.",
-          "type": "array",
-          "items": {
-            "type": "string"
-          },
-          "default": []
-        }
-      }
+    "path-1": {
+      "title": "Bibliography source no. 1",
+      "description": "Absolute path to a bibliography file.",
+      "type": "string",
+      "default": ""
+    },
+    "path-2": {
+      "title": "Bibliography source no. 2",
+      "description": "Absolute path to a bibliography file.",
+      "type": "string",
+      "default": ""
+    },
+    "path-3": {
+      "title": "Bibliography source no. 3",
+      "description": "Absolute path to a bibliography file.",
+      "type": "string",
+      "default": ""
+    },
+    "path-4": {
+      "title": "Bibliography source no. 4",
+      "description": "Absolute path to a bibliography file.",
+      "type": "string",
+      "default": ""
+    },
+    "path-5": {
+      "title": "Bibliography source no. 5",
+      "description": "Absolute path to a bibliography file.",
+      "type": "string",
+      "default": ""
+    },
+    "paths": {
+      "title": "Additional bibliography sources",
+      "description": "Additional absolute paths to bibliography files.",
+      "type": "array",
+      "items": {
+        "type": "string"
+      },
+      "default": []
     }
   },
   "devDependencies": {
