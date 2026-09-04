@@ -49,6 +49,38 @@ describe("bib-finder item actions", () => {
     expect(byCommand.has("bib-finder:clear-recent")).toBe(false);
   });
 
+  it("wraps summaries while keeping source paths on one line", async () => {
+    main.showSource = true;
+    const item = {
+      id: "plain\u0000source.bib\u00000",
+      key: "plain",
+      description: "Plain entry",
+      type: "book",
+      text: "plain Plain entry @book variant=american",
+      fPath: "a/very/long/path/to/source.bib",
+    };
+
+    await main.selectListHost.show();
+    await main.selectList.setItems([item]);
+
+    const row = main.selectList.getElement().querySelector("li");
+    expect(row.classList.contains("two-lines")).toBe(true);
+    expect(row.querySelector(".entry-summary").textContent).toBe("Plain entry");
+    expect(row.querySelector(".source-line").textContent).toBe(item.fPath);
+    const summaryStyle = getComputedStyle(row.querySelector(".entry-summary"));
+    expect(summaryStyle.whiteSpace).toBe("normal");
+    expect(summaryStyle.overflowWrap).toBe("anywhere");
+    expect(getComputedStyle(row.querySelector(".source-line")).whiteSpace).toBe("nowrap");
+
+    main.selectList.getQueryEditor().setText("variant=american");
+    await lumine.views.getNextUpdatePromise();
+    expect(main.selectList.getFilteredItems()).toEqual([item]);
+    expect(main.selectList.getElement().querySelector("li").textContent).not.toContain(
+      "variant=american",
+    );
+    expect(main.selectList.getElement().querySelector(".character-match")).toBeNull();
+  });
+
   it("keeps list actions available without a match and hides clear when history is empty", async () => {
     await main.selectList.selectNone();
 

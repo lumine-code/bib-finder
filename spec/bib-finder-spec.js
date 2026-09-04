@@ -29,6 +29,19 @@ const BOOK_GIT = `@book{gitc01,
 }
 `;
 
+const MULTILINE_ENTRY = `@incollection{westfahl:space,
+  author = {Westfahl, Gary},
+  title = {The True Frontier},
+  subtitle = {Confronting and Avoiding the Realities of Space in {American}
+              Science Fiction Films},
+  pages = {55--65},
+  crossref = {westfahl:frontier},
+  langidopts = {variant=american},
+  annotation = {A cross-referenced article from a \\texttt{collection}. This is
+                deliberately long metadata that should remain searchable},
+}
+`;
+
 describe("bib-finder", () => {
   let mainModule, tempDir;
 
@@ -129,6 +142,32 @@ describe("bib-finder", () => {
         "fhck07",
         "fhck07",
         "stng51",
+      ]);
+    });
+
+    it("builds a compact summary while retaining non-summary fields for search", async () => {
+      fs.writeFileSync(path.join(tempDir, "multiline.bib"), MULTILINE_ENTRY);
+
+      await mainModule.cache("local");
+
+      const entry = mainModule.items.find((item) => item.key === "westfahl:space");
+      expect(entry.description).toBe(
+        "Westfahl, Gary • The True Frontier: " +
+          "Confronting and Avoiding the Realities of Space in American Science Fiction Films",
+      );
+      expect(entry.description).not.toContain("cross-referenced");
+      expect(entry.description).not.toContain("variant=american");
+      expect(entry.description).not.toContain("55–65");
+      expect(entry.text).toContain("cross-referenced");
+      expect(entry.text).toContain("variant=american");
+      expect(entry.text).not.toMatch(/[\r\n]|\s{2,}/);
+
+      await mainModule.selectList.setItems(mainModule.items);
+      await mainModule.selectListHost.show();
+      mainModule.selectList.getQueryEditor().setText("deliberately long metadata");
+      await lumine.views.getNextUpdatePromise();
+      expect(mainModule.selectList.getFilteredItems().map((item) => item.key)).toEqual([
+        "westfahl:space",
       ]);
     });
   });

@@ -7,6 +7,13 @@
   color: var(--syntax-color-constant);
 }
 
-.bib-finder .secondary-line {
-  white-space: pre-wrap !important;
+.bib-finder .entry-summary {
+  overflow: visible;
+  overflow-wrap: anywhere;
+  text-overflow: clip;
+  white-space: normal !important;
+}
+
+.bib-finder .source-line {
+  white-space: nowrap !important;
 }
