@@ -42,6 +42,37 @@ const MULTILINE_ENTRY = `@incollection{westfahl:space,
 }
 `;
 
+const UNICODE_ENTRY = String.raw`@article{muller2026,
+  author = {M\"{u}ller, Anna},
+  title = {Repeated \alpha{} and \alpha},
+  year = 2026,
+}
+`;
+
+const PARTIALLY_BROKEN_LIBRARY = `@article{before,
+  title = {Before},
+}
+
+@article{broken,
+  title {Missing equals},
+}
+
+@book{after,
+  title = {After},
+}
+`;
+
+const INHERITED_ENTRY = `@xdata{shared,
+  author = {Inherited Author},
+  publisher = {Inherited Press},
+}
+
+@incollection{child,
+  title = {A Chapter},
+  xdata = {shared},
+}
+`;
+
 describe("bib-finder", () => {
   let mainModule, tempDir;
 
@@ -169,6 +200,44 @@ describe("bib-finder", () => {
       expect(mainModule.selectList.getFilteredItems().map((item) => item.key)).toEqual([
         "westfahl:space",
       ]);
+    });
+
+    it("uses decoded Unicode values from the maintained parser", async () => {
+      fs.writeFileSync(path.join(tempDir, "unicode.bib"), UNICODE_ENTRY);
+
+      await mainModule.cache("local");
+
+      const entry = mainModule.items.find((item) => item.key === "muller2026");
+      expect(entry.description).toBe("Müller, Anna • Repeated α and α • 2026");
+      expect(entry.text).not.toContain("\\alpha");
+    });
+
+    it("indexes inherited values without exposing xdata records as citations", async () => {
+      fs.writeFileSync(path.join(tempDir, "inherited.bib"), INHERITED_ENTRY);
+
+      await mainModule.cache("local");
+
+      expect(mainModule.items.some((item) => item.key === "shared")).toBeFalse();
+      const entry = mainModule.items.find((item) => item.key === "child");
+      expect(entry.description).toBe("Inherited Author • A Chapter");
+      expect(entry.text).toContain("Inherited Press");
+    });
+
+    it("keeps valid entries around malformed input and reports one warning", async () => {
+      const sourcePath = path.join(tempDir, "broken.bib");
+      fs.writeFileSync(sourcePath, PARTIALLY_BROKEN_LIBRARY);
+      lumine.config.set("bib-finder.path-1", sourcePath);
+      const addWarning = spyOn(lumine.notifications, "addWarning");
+
+      await mainModule.cache(1);
+
+      expect(mainModule.items.map((item) => item.key)).toEqual(["before", "after"]);
+      expect(addWarning).toHaveBeenCalledTimes(1);
+      const [message, options] = addWarning.calls.mostRecent().args;
+      expect(message).toBe("Bibliography source contains parsing issues");
+      expect(options.detail).toContain("broken.bib has 1 issue");
+      expect(options.detail).toContain("line 6");
+      expect(options.dismissable).toBeTrue();
     });
   });
 });
