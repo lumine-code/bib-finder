@@ -223,6 +223,53 @@ describe("bib-finder", () => {
       expect(entry.text).toContain("Inherited Press");
     });
 
+    it("uses BibLaTeX aliases without flagging arbitrary TeX commands", async () => {
+      const sourcePath = path.join(tempDir, "aliases.bib");
+      fs.writeFileSync(
+        sourcePath,
+        String.raw`@mvbook{parent,ids={parent-alias},title={Collected \custom{Works}}}
+@book{child,crossref={parent-alias},title={Volume One}}`,
+      );
+      lumine.config.set("bib-finder.path-1", sourcePath);
+      const addWarning = spyOn(lumine.notifications, "addWarning");
+
+      await mainModule.cache(1);
+
+      expect(addWarning).not.toHaveBeenCalled();
+      expect(mainModule.items.find((item) => item.key === "child").text).toContain(
+        String.raw`Collected \custom{Works}`,
+      );
+      expect(mainModule.items.every((item) => item.diagnostics.length === 0)).toBeTrue();
+    });
+
+    it("attaches entry diagnostics to a right-hand badge instead of a notification", async () => {
+      const sourcePath = path.join(tempDir, "entry-issue.bib");
+      fs.writeFileSync(sourcePath, "@book{child, title={Child}, crossref={missing-parent}}");
+      lumine.config.set("bib-finder.path-1", sourcePath);
+      const addWarning = spyOn(lumine.notifications, "addWarning");
+
+      await mainModule.cache(1);
+
+      expect(addWarning).not.toHaveBeenCalled();
+      expect(mainModule.items.length).toBe(1);
+      expect(mainModule.items[0].diagnostics.map(({ code }) => code)).toEqual(["missing-parent"]);
+    });
+
+    it("aggregates file-level diagnostics into one notification", async () => {
+      fs.writeFileSync(path.join(tempDir, "keyless-a.bib"), "@book{title={Missing key}}");
+      fs.writeFileSync(path.join(tempDir, "keyless-b.bib"), "@article{year=2026}");
+      const addWarning = spyOn(lumine.notifications, "addWarning");
+
+      await mainModule.cache("local");
+
+      expect(addWarning).toHaveBeenCalledTimes(1);
+      const [message, options] = addWarning.calls.mostRecent().args;
+      expect(message).toBe("Bibliography sources contain file-level parsing issues");
+      expect(options.detail).toContain("2 bibliography sources have 2 file-level issues");
+      expect(options.detail).toContain("Bibliography entry is missing a key");
+      expect(options.dismissable).toBeTrue();
+    });
+
     it("keeps valid entries around malformed input and reports one warning", async () => {
       const sourcePath = path.join(tempDir, "broken.bib");
       fs.writeFileSync(sourcePath, PARTIALLY_BROKEN_LIBRARY);
@@ -234,8 +281,8 @@ describe("bib-finder", () => {
       expect(mainModule.items.map((item) => item.key)).toEqual(["before", "after"]);
       expect(addWarning).toHaveBeenCalledTimes(1);
       const [message, options] = addWarning.calls.mostRecent().args;
-      expect(message).toBe("Bibliography source contains parsing issues");
-      expect(options.detail).toContain("broken.bib has 1 issue");
+      expect(message).toBe("Bibliography source contains file-level parsing issues");
+      expect(options.detail).toContain("broken.bib has 1 file-level issue");
       expect(options.detail).toContain("line 6");
       expect(options.dismissable).toBeTrue();
     });

@@ -81,6 +81,36 @@ describe("bib-finder item actions", () => {
     expect(main.selectList.getElement().querySelector(".character-match")).toBeNull();
   });
 
+  it("renders entry diagnostics in a right-hand badge", async () => {
+    const diagnostic = {
+      severity: "warning",
+      code: "missing-parent",
+      message: "Entry child references missing crossref entry parent",
+      location: { start: { line: 4, column: 3 } },
+    };
+    const item = {
+      id: "child\u0000source.bib\u00000",
+      key: "child",
+      description: "Child entry",
+      type: "book",
+      text: "child Child entry @book",
+      fPath: "source.bib",
+      diagnostics: [diagnostic],
+    };
+
+    await main.selectListHost.show();
+    await main.selectList.setItems([item]);
+
+    const row = main.selectList.getElement().querySelector("li");
+    const badge = row.querySelector(".trailing-block .parse-issues-badge");
+    expect(row.classList.contains("has-parsing-issues")).toBeTrue();
+    expect(badge.textContent).toBe("1 issue");
+    expect(badge.classList.contains("badge-warning")).toBeTrue();
+    expect(badge.title).toContain("source.bib");
+    expect(badge.title).toContain("Entry child references missing crossref entry parent");
+    expect(badge.getAttribute("aria-label")).toBe(badge.title);
+  });
+
   it("keeps list actions available without a match and hides clear when history is empty", async () => {
     await main.selectList.selectNone();
 

@@ -12,6 +12,7 @@ Supports multiple `.bib` files with fuzzy search and works in any file scope.
 - **Flexible insertion**: insert bare keys, `\cite{}`, or `\cite[]{}` formats.
 - **Type filtering**: the entry type is appended to the search text, so `@book` narrows the list to books.
 - **Recently used first**: keeps the entries you inserted at the top of the unfiltered list, ruled off from the rest.
+- **Local diagnostics**: shows entry-specific parsing issues in right-hand badges and reserves one aggregated notification for file-level problems.
 
 ## Installation
 

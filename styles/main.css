@@ -7,6 +7,10 @@
   color: var(--syntax-color-constant);
 }
 
+.bib-finder .parse-issues-badge {
+  cursor: help;
+}
+
 .bib-finder .entry-summary {
   overflow: visible;
   overflow-wrap: anywhere;
