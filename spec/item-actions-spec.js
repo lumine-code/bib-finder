@@ -82,6 +82,7 @@ describe("bib-finder item actions", () => {
   });
 
   it("renders entry diagnostics in a right-hand badge", async () => {
+    const addTooltip = spyOn(lumine.tooltips, "add").and.callThrough();
     const diagnostic = {
       severity: "warning",
       code: "missing-parent",
@@ -106,9 +107,12 @@ describe("bib-finder item actions", () => {
     expect(row.classList.contains("has-parsing-issues")).toBeTrue();
     expect(badge.textContent).toBe("1 issue");
     expect(badge.classList.contains("badge-warning")).toBeTrue();
-    expect(badge.title).toContain("source.bib");
-    expect(badge.title).toContain("Entry child references missing crossref entry parent");
-    expect(badge.getAttribute("aria-label")).toBe(badge.title);
+    expect(badge.classList.contains("badge-flexible")).toBeFalse();
+    expect(badge.title).toBe("");
+    const [, tooltipOptions] = addTooltip.calls.allArgs().find(([element]) => element === badge);
+    expect(tooltipOptions.title).toContain("source.bib");
+    expect(tooltipOptions.title).toContain("Entry child references missing crossref entry parent");
+    expect(badge.getAttribute("aria-label")).toBe(tooltipOptions.title);
   });
 
   it("keeps list actions available without a match and hides clear when history is empty", async () => {
