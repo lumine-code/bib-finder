@@ -36,24 +36,6 @@
     "format": "prettier --write .",
     "format:check": "prettier --check ."
   },
-  "activationCommands": {
-    "lumine-workspace": [
-      "bib-finder:cite",
-      "bib-finder:cite-from-local",
-      "bib-finder:cite-from-source-1",
-      "bib-finder:cite-from-source-2",
-      "bib-finder:cite-from-source-3",
-      "bib-finder:cite-from-source-4",
-      "bib-finder:cite-from-source-5",
-      "bib-finder:cache",
-      "bib-finder:clear-recent",
-      "bib-finder:open-source-1",
-      "bib-finder:open-source-2",
-      "bib-finder:open-source-3",
-      "bib-finder:open-source-4",
-      "bib-finder:open-source-5"
-    ]
-  },
   "dependencies": {
     "@lumine-code/bibtex-parse": "github:lumine-code/bibtex-parse#746127fb0a0948740384eaf8ca2887ba0ec9ae8e"
   },
