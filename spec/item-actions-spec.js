@@ -3,11 +3,10 @@ describe("bib-finder item actions", () => {
 
   beforeEach(async () => {
     jasmine.attachToDOM(lumine.views.getView(lumine.workspace));
-    // The package activates on its commands, so dispatch one to trigger it;
-    // activation also loads the package keymap the actions list reads.
-    const activation = lumine.packages.activatePackage("bib-finder");
-    lumine.commands.dispatch(lumine.views.getView(lumine.workspace), "bib-finder:cache");
-    main = (await activation).mainModule;
+    // Activation also loads the package keymap that the actions list reads.
+    // Do not dispatch `bib-finder:cache` here: its asynchronous refresh can
+    // finish after a spec seeds the list and replace that fixture.
+    main = (await lumine.packages.activatePackage("bib-finder")).mainModule;
   });
 
   afterEach(async () => {
