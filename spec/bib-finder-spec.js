@@ -1,6 +1,7 @@
 const fs = require("fs");
 const os = require("os");
 const path = require("path");
+const fsp = require("fs/promises");
 
 const BOOK_A = `@book{fhck07,
   author = "Hartmann, Friedel and Katz, Casimir",
@@ -285,6 +286,141 @@ describe("bib-finder", () => {
       expect(options.detail).toContain("broken.bib has 1 file-level issue");
       expect(options.detail).toContain("line 6");
       expect(options.dismissable).toBeTrue();
+    });
+  });
+
+  describe("asynchronous load ownership", () => {
+    function deferred() {
+      let resolve, reject;
+      const promise = new Promise((finish, fail) => {
+        resolve = finish;
+        reject = fail;
+      });
+      return { promise, resolve, reject };
+    }
+
+    function delaySource(sourceId) {
+      const sourcePath = path.join(tempDir, `delayed-${sourceId}.bib`);
+      lumine.config.set(`bib-finder.path-${sourceId}`, sourcePath);
+      return sourcePath;
+    }
+
+    function interceptReads(responses) {
+      const original = fsp.readFile;
+      return spyOn(fsp, "readFile").and.callFake((filePath, ...options) => {
+        const response = responses.get(filePath);
+        return response ? response.promise : original.call(fsp, filePath, ...options);
+      });
+    }
+
+    it("does not publish or restore cache after a delayed update outlives deactivation", async () => {
+      const response = deferred();
+      const sourcePath = delaySource(1);
+      interceptReads(new Map([[sourcePath, response]]));
+      const list = mainModule.selectList;
+      const setItems = spyOn(list, "setItems").and.callThrough();
+      const pending = mainModule.update(1);
+      await lumine.packages.deactivatePackage("bib-finder");
+      response.resolve(BOOK_A);
+
+      await expectAsync(pending).toBeResolved();
+
+      expect(setItems).not.toHaveBeenCalled();
+      expect(mainModule.items).toBeNull();
+    });
+
+    it("keeps the newest source when two updates finish in reverse order", async () => {
+      const older = deferred();
+      const newer = deferred();
+      const firstPath = delaySource(1);
+      const secondPath = delaySource(2);
+      interceptReads(
+        new Map([
+          [firstPath, older],
+          [secondPath, newer],
+        ]),
+      );
+      const first = mainModule.update(1);
+      const second = mainModule.update(2);
+      newer.resolve("@book{newest, title={Newest}}");
+      await second;
+      older.resolve(BOOK_A);
+      await first;
+
+      expect(mainModule.id).toBe(2);
+      expect(mainModule.items.map((item) => item.key)).toEqual(["newest"]);
+      expect(mainModule.selectList.getItems().map((item) => item.key)).toEqual(["newest"]);
+    });
+
+    it("discards a pending load after its configured source changes", async () => {
+      const response = deferred();
+      const sourcePath = delaySource(1);
+      interceptReads(new Map([[sourcePath, response]]));
+      const pending = mainModule.loadEntries(1);
+      const replacementPath = path.join(tempDir, "replacement.bib");
+      fs.writeFileSync(replacementPath, "@book{replacement, title={Replacement}}");
+      lumine.config.set("bib-finder.path-1", replacementPath);
+      response.resolve(BOOK_A);
+
+      expect(await pending).toBeUndefined();
+      expect(mainModule.items).toBeNull();
+      const current = await mainModule.loadEntries(1);
+      expect(current.items.map((item) => item.key)).toEqual(["replacement"]);
+    });
+
+    it("does not emit a delayed missing-file warning after deactivation", async () => {
+      const response = deferred();
+      const sourcePath = delaySource(1);
+      interceptReads(new Map([[sourcePath, response]]));
+      const error = spyOn(lumine.notifications, "addError");
+      const pending = mainModule.cache(1);
+      await lumine.packages.deactivatePackage("bib-finder");
+      response.reject(Object.assign(new Error("Missing source"), { code: "ENOENT" }));
+      await pending;
+
+      expect(error).not.toHaveBeenCalled();
+      expect(mainModule.items).toBeNull();
+    });
+
+    it("honors the list source's abort signal before publishing cache", async () => {
+      const response = deferred();
+      const sourcePath = delaySource(1);
+      interceptReads(new Map([[sourcePath, response]]));
+      const controller = new AbortController();
+      mainModule.nextId = 1;
+      const pending = mainModule.selectList.getSource().load({ signal: controller.signal });
+      controller.abort();
+      response.resolve(BOOK_A);
+
+      expect(await pending).toBeUndefined();
+      expect(mainModule.items).toBeNull();
+    });
+
+    it("discards a delayed crawl when the project roots change", async () => {
+      const response = deferred();
+      spyOn(mainModule, "crawlBibFiles").and.returnValue(response.promise);
+      const pending = mainModule.loadEntries("local");
+      lumine.project.setPaths([]);
+      response.resolve([path.join(tempDir, "a.bib")]);
+
+      expect(await pending).toBeUndefined();
+      expect(mainModule.items).toBeNull();
+    });
+
+    it("does not update status when setItems outlives deactivation", async () => {
+      const sourcePath = path.join(tempDir, "a.bib");
+      lumine.config.set("bib-finder.path-1", sourcePath);
+      const list = mainModule.selectList;
+      const response = deferred();
+      spyOn(list, "setItems").and.returnValue(response.promise);
+      const status = spyOn(list, "setStatus").and.callThrough();
+      const pending = mainModule.update(1);
+      await conditionPromise(() => list.setItems.calls.count() > 0);
+      await lumine.packages.deactivatePackage("bib-finder");
+      response.resolve();
+
+      await expectAsync(pending).toBeResolved();
+      expect(status).not.toHaveBeenCalled();
     });
   });
 });
