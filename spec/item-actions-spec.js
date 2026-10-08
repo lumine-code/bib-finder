@@ -4,13 +4,30 @@ describe("bib-finder item actions", () => {
   beforeEach(async () => {
     jasmine.attachToDOM(lumine.views.getView(lumine.workspace));
     // Activation also loads the package keymap that the actions list reads.
-    // Do not dispatch `bib-finder:cache` here: its asynchronous refresh can
-    // finish after a spec seeds the list and replace that fixture.
     main = (await lumine.packages.activatePackage("bib-finder")).mainModule;
   });
 
   afterEach(async () => {
     await lumine.packages.deactivatePackage("bib-finder");
+  });
+
+  it("keeps cache rebuilding local to the citation list", async () => {
+    const workspace = lumine.views.getView(lumine.workspace);
+    const workspaceCommands = lumine.commands.findCommands({ target: workspace });
+    expect(workspaceCommands.map(({ name }) => name)).not.toContain("bib-finder:cache");
+    expect(workspaceCommands.map(({ name }) => name)).not.toContain("bib-finder:rebuild-cache");
+
+    const refresh = spyOn(main, "refresh");
+    const list = main.selectList.getElement();
+    let finishedSubscription;
+    const finished = new Promise((resolve) => {
+      finishedSubscription = main.selectList.onDidFinishAction(resolve);
+    });
+    lumine.commands.dispatch(list, "bib-finder:rebuild-cache");
+    await finished;
+    finishedSubscription.dispose();
+
+    expect(refresh).toHaveBeenCalledOnceWith(main.id);
   });
 
   it("derives its actions from the command registrations and the keymap", async () => {
@@ -119,6 +136,8 @@ describe("bib-finder item actions", () => {
 
     let actions = main.selectList.getAvailableActions();
     expect(actions.map((action) => action.command)).toEqual(["bib-finder:rebuild-cache"]);
+    expect(actions[0].context).toBe("dialog");
+    expect(actions[0].enabled).toBe(true);
 
     await main.selectList.setRecentItemIds(["recent"]);
     actions = main.selectList.getAvailableActions();

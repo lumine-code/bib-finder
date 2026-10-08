@@ -67,7 +67,7 @@
     },
     "reloadAlways": {
       "title": "Always reload keys from all `.bib` sources",
-      "description": "If not, you will need to manually run the `bib-finder:cache' command to re-cache the sources.",
+      "description": "Otherwise, use the Rebuild Cache action in the citation list to reload the sources.",
       "type": "boolean",
       "default": false
     },

@@ -25,7 +25,6 @@ Commands available in `lumine-workspace`:
 - `bib-finder:cite`: open citation list,
 - `bib-finder:cite-from-local`: open citation list from local `.bib` files only,
 - `bib-finder:cite-from-source-N`: open citation list from source no. N,
-- `bib-finder:cache`: re-cache entries from the `.bib` sources,
 - `bib-finder:open-source-N`: open source no. N bib file,
 - `bib-finder:clear-recent`: forget the recently used entries.
 
