@@ -5,7 +5,9 @@
       "submenu": [
         {
           "label": "Insert Citation…",
-          "command": "bib-finder:cite"
+          "command": "bib-finder:cite",
+          "group": "insert",
+          "order": 20
         }
       ]
     },
