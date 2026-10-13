@@ -1,0 +1,17 @@
+{
+  "title": "bib-finder",
+  "description": "Search local BibTeX entries before inserting a citation.",
+  "recordedOn": "2026-10-13",
+  "sourceRevision": "da912dfffabfd7a6d1eabb4ec0b9a4d4c36ac95f",
+  "mode": "normal",
+  "fontSettings": "default",
+  "themeSourceRevision": "6564a9e21899b5541e9c8f8006f9be6d6d72e6ad",
+  "images": [
+    {
+      "file": "demo.png",
+      "label": "Search local BibTeX entries before inserting a citation.",
+      "width": 1100,
+      "height": 570
+    }
+  ]
+}

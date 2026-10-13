@@ -14,6 +14,8 @@ Supports multiple `.bib` files with fuzzy search and works in any file scope.
 - **Recently used first**: keeps the entries you inserted at the top of the unfiltered list, ruled off from the rest.
 - **Local diagnostics**: shows entry-specific parsing issues in right-hand badges and reserves one aggregated notification for file-level problems.
 
+![Search local BibTeX entries before inserting a citation.](.github/demo.png)
+
 ## Installation
 
 To install `bib-finder` search for it in the Install pane of the Lumine settings, or run the command `lumine --install lumine-code/bib-finder`.
