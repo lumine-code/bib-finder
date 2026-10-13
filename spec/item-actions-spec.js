@@ -27,7 +27,7 @@ describe("bib-finder item actions", () => {
     await finished;
     finishedSubscription.dispose();
 
-    expect(refresh).toHaveBeenCalledOnceWith(main.id);
+    expect(refresh).toHaveBeenCalledOnceWith(main.nextId, lumine.workspace.getMainWindow());
   });
 
   it("derives its actions from the command registrations and the keymap", async () => {
@@ -160,7 +160,7 @@ describe("bib-finder item actions", () => {
     lumine.workspace.popModal();
     await main.selectList.runAction("bib-finder:rebuild-cache");
 
-    expect(spy).toHaveBeenCalledWith(main.id);
+    expect(spy).toHaveBeenCalledWith(main.nextId, lumine.workspace.getMainWindow());
     expect(main.selectListHost.isVisible()).toBeTruthy();
   });
 });
