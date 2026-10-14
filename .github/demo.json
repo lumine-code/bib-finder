@@ -1,17 +1,75 @@
 {
   "title": "bib-finder",
   "description": "Search local BibTeX entries before inserting a citation.",
-  "recordedOn": "2026-10-13",
-  "sourceRevision": "da912dfffabfd7a6d1eabb4ec0b9a4d4c36ac95f",
+  "recordedOn": "2026-10-14",
+  "sourceRevision": "f3941e696adf477258be9496b39c3a130ddcc1eb",
+  "themeSourceRevision": "7fbd047a87ecf1367c896b19ff270cdc28d319f7",
   "mode": "normal",
   "fontSettings": "default",
-  "themeSourceRevision": "6564a9e21899b5541e9c8f8006f9be6d6d72e6ad",
+  "scenario": "demo.js",
+  "recipeHash": "d1ba9a48b522fbe9639acf95870a8eb1b689f307ec9f607b431227fbd867a9d0",
+  "environment": {
+    "platform": "win32",
+    "arch": "x64",
+    "electron": "44.7.0",
+    "chrome": "152.0.7977.130",
+    "devicePixelRatio": 1,
+    "locale": "en-GB",
+    "fontFamily": "Fira Code, Menlo, DejaVu Sans Mono, Consolas, monospace",
+    "fontSize": 14,
+    "themes": ["one-day-syntax", "one-day-ui"]
+  },
+  "viewport": { "width": 1100, "height": 570 },
+  "cornerRadius": 10,
+  "sources": {
+    "editor": {
+      "revision": "8be8f86075ad93df038610d82b3ac6d99329957d",
+      "dirty": true,
+      "workingTreeHash": "0a9458f6e3959fe7a52b2fec76abef27dcbaa9792f192b81ac1e3f6b2be82009"
+    },
+    "package": {
+      "revision": "f3941e696adf477258be9496b39c3a130ddcc1eb",
+      "dirty": false,
+      "workingTreeHash": "4f53cda18c2baa0c0354bb5f9a3ecbe5ed12ab4d8e11ba873c2f11161202b945"
+    },
+    "bib-finder": {
+      "revision": "f3941e696adf477258be9496b39c3a130ddcc1eb",
+      "dirty": false,
+      "workingTreeHash": "4f53cda18c2baa0c0354bb5f9a3ecbe5ed12ab4d8e11ba873c2f11161202b945"
+    },
+    "language-bibtex": {
+      "revision": "6c71db92e51ef66adb17ef998a34fd8c82b6923b",
+      "dirty": false,
+      "workingTreeHash": "4f53cda18c2baa0c0354bb5f9a3ecbe5ed12ab4d8e11ba873c2f11161202b945"
+    },
+    "language-latex": {
+      "revision": "64e59168e7677cd0547f5cf32ffc7ad8cff617c3",
+      "dirty": false,
+      "workingTreeHash": "4f53cda18c2baa0c0354bb5f9a3ecbe5ed12ab4d8e11ba873c2f11161202b945"
+    },
+    "one-theme": {
+      "revision": "7fbd047a87ecf1367c896b19ff270cdc28d319f7",
+      "dirty": false,
+      "workingTreeHash": "4f53cda18c2baa0c0354bb5f9a3ecbe5ed12ab4d8e11ba873c2f11161202b945"
+    }
+  },
+  "fixtures": [
+    {
+      "file": "bibliography/references.bib",
+      "sha256": "dc54e724ad19f1f67599ad45dca953db241fa9f02bda26c01f2398e6cabd7cc5"
+    },
+    {
+      "file": "bibliography/report.tex",
+      "sha256": "1e31e6b9c2562fe95dea44ed99882a0e3da760f89049cfa4d9d22bcb2e45c6bc"
+    }
+  ],
   "images": [
     {
       "file": "demo.png",
       "label": "Search local BibTeX entries before inserting a citation.",
       "width": 1100,
-      "height": 570
+      "height": 570,
+      "sha256": "9ad4bda07fad842f760d2ad8feeae151056590724cfe7eea40cf40911f4cbf97"
     }
   ]
 }
