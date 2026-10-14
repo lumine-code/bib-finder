@@ -18,55 +18,82 @@
           "label": "Bib Finder",
           "submenu": [
             {
-              "label": "Cite",
+              "label": "Insert Citation…",
               "command": "bib-finder:cite"
             },
             {
-              "label": "Cite from Local",
+              "label": "Insert Citation from Local Files…",
               "command": "bib-finder:cite-from-local"
             },
             {
-              "label": "Cite from Source 1",
-              "command": "bib-finder:cite-from-source-1"
-            },
-            {
-              "label": "Cite from Source 2",
-              "command": "bib-finder:cite-from-source-2"
-            },
-            {
-              "label": "Cite from Source 3",
-              "command": "bib-finder:cite-from-source-3"
-            },
-            {
-              "label": "Cite from Source 4",
-              "command": "bib-finder:cite-from-source-4"
-            },
-            {
-              "label": "Cite from Source 5",
-              "command": "bib-finder:cite-from-source-5"
-            },
-            {
-              "type": "separator"
-            },
-            {
-              "label": "Open Source 1",
-              "command": "bib-finder:open-source-1"
-            },
-            {
-              "label": "Open Source 2",
-              "command": "bib-finder:open-source-2"
-            },
-            {
-              "label": "Open Source 3",
-              "command": "bib-finder:open-source-3"
-            },
-            {
-              "label": "Open Source 4",
-              "command": "bib-finder:open-source-4"
-            },
-            {
-              "label": "Open Source 5",
-              "command": "bib-finder:open-source-5"
+              "label": "Sources",
+              "submenu": [
+                {
+                  "label": "Source 1",
+                  "submenu": [
+                    {
+                      "label": "Insert Citation…",
+                      "command": "bib-finder:cite-from-source-1"
+                    },
+                    {
+                      "label": "Open Bibliography",
+                      "command": "bib-finder:open-source-1"
+                    }
+                  ]
+                },
+                {
+                  "label": "Source 2",
+                  "submenu": [
+                    {
+                      "label": "Insert Citation…",
+                      "command": "bib-finder:cite-from-source-2"
+                    },
+                    {
+                      "label": "Open Bibliography",
+                      "command": "bib-finder:open-source-2"
+                    }
+                  ]
+                },
+                {
+                  "label": "Source 3",
+                  "submenu": [
+                    {
+                      "label": "Insert Citation…",
+                      "command": "bib-finder:cite-from-source-3"
+                    },
+                    {
+                      "label": "Open Bibliography",
+                      "command": "bib-finder:open-source-3"
+                    }
+                  ]
+                },
+                {
+                  "label": "Source 4",
+                  "submenu": [
+                    {
+                      "label": "Insert Citation…",
+                      "command": "bib-finder:cite-from-source-4"
+                    },
+                    {
+                      "label": "Open Bibliography",
+                      "command": "bib-finder:open-source-4"
+                    }
+                  ]
+                },
+                {
+                  "label": "Source 5",
+                  "submenu": [
+                    {
+                      "label": "Insert Citation…",
+                      "command": "bib-finder:cite-from-source-5"
+                    },
+                    {
+                      "label": "Open Bibliography",
+                      "command": "bib-finder:open-source-5"
+                    }
+                  ]
+                }
+              ]
             }
           ]
         }
