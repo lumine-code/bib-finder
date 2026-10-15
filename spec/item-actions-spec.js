@@ -49,7 +49,9 @@ describe("bib-finder item actions", () => {
     expect(insertCite.description).toBe("Insert the key wrapped in a LaTeX \\cite{…} command.");
     expect(insertCite.keystrokes).toEqual(["alt-enter"]);
 
-    expect(byCommand.get("bib-finder:insert-cite-square").keystrokes).toEqual(["ctrl-enter"]);
+    expect(byCommand.get("bib-finder:insert-cite-square").keystrokes).toEqual([
+      process.platform === "darwin" ? "cmd-enter" : "ctrl-enter",
+    ]);
     expect(byCommand.get("bib-finder:rebuild-cache").keystrokes).toEqual(["f5"]);
     expect(byCommand.get("bib-finder:insert-key").primary).toBe(true);
 

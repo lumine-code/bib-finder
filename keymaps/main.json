@@ -1,12 +1,12 @@
 {
   // :not([mini]) because these insert a citation into the file.
   "lumine-text-editor:not([mini])": {
-    "f9": "bib-finder:cite",
+    "cmdorctrl-k shift-b": "bib-finder:cite",
     "ctrl-f9": "bib-finder:open-source-1"
   },
   ".bib-finder lumine-text-editor[mini]": {
     "alt-enter": "bib-finder:insert-cite",
-    "ctrl-enter": "bib-finder:insert-cite-square",
+    "cmdorctrl-enter": "bib-finder:insert-cite-square",
     "f5": "bib-finder:rebuild-cache"
   }
 }
