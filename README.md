@@ -27,7 +27,7 @@ Commands available in `lumine-workspace`:
 - `bib-finder:open-source-N`: open source no. N bib file,
 - `bib-finder:clear-recent`: forget the recently used entries.
 
-Commands available in `lumine-text-editor:not([mini]):not([readonly]), .bib-finder`:
+Commands available in `lumine-text-editor:not([mini]):not([readonly])` and `.bib-finder`:
 
 - `bib-finder:cite`: open the citation list or close the current list,
 - `bib-finder:cite-from-local`: open the citation list from local `.bib` files only,
