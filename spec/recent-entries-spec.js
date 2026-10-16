@@ -83,7 +83,7 @@ describe("bib-finder recent entries", () => {
 
     expect(editor.getText()).toBe("\\cite[]{stng51}");
     expect(selectList.getRecentItemIds()).toEqual([entry("stng51").id]);
-    expect(main.serialize()).toEqual({ recentlyUsed: [entry("stng51").id] });
+    expect(main.workspaceState.get("recentlyUsed", [])).toEqual([entry("stng51").id]);
   });
 
   it("records nothing when there is no editor to insert into", async () => {
@@ -153,13 +153,24 @@ describe("bib-finder recent entries", () => {
     expect(selectList.getElement().querySelector(".select-list-separator")).toBeNull();
   });
 
-  it("restores what it serialized", async () => {
+  it("loads persisted project recents after package reactivation", async () => {
     await main.selectList.recordRecentItem(entry("stng51"));
-    const state = main.serialize();
-    await main.deactivate();
+    const saved = main.workspaceState.get("recentlyUsed", []);
+    await lumine.packages.deactivatePackage("bib-finder");
+    main = (await lumine.packages.activatePackage("bib-finder")).mainModule;
 
-    main.activate(state);
-
-    expect(main.selectList.getRecentItemIds()).toEqual([state.recentlyUsed[0]]);
+    expect(main.selectList.getRecentItemIds()).toEqual(saved);
+  });
+  it("projects stored history changes into the existing list and persists the next use", async () => {
+    const list = main.selectList;
+    const restored = entry("stng51").id;
+    await main.workspaceState.update("recentlyUsed", [restored]);
+    expect(main.selectList).toBe(list);
+    expect(list.getRecentItemIds()).toEqual([restored]);
+    await list.recordRecentItem(entry("fhck07"));
+    expect(main.workspaceState.get("recentlyUsed", [])).toEqual([
+      list.getItemId(entry("fhck07")),
+      restored,
+    ]);
   });
 });
