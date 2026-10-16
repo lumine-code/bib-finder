@@ -1,7 +1,8 @@
 {
-  // :not([mini]) because these insert a citation into the file.
+  "lumine-text-editor:not([mini]):not([readonly])": {
+    "cmdorctrl-k shift-b": "bib-finder:cite"
+  },
   "lumine-text-editor:not([mini])": {
-    "cmdorctrl-k shift-b": "bib-finder:cite",
     "ctrl-f9": "bib-finder:open-source-1"
   },
   ".bib-finder lumine-text-editor[mini]": {

@@ -43,6 +43,27 @@ describe("bib-finder menu command scopes", () => {
         .toBe(false);
   });
 
+  it("does not consume mutation shortcuts in a read-only editor", () => {
+    const element = editor.getElement();
+    for (const name of ["cite"])
+      expect(
+        lumine.keymaps.findKeyBindings({ target: element, command: `bib-finder:${name}` }).length,
+      )
+        .withContext(name)
+        .toBeGreaterThan(0);
+    element.setAttribute("readonly", "");
+    for (const name of ["cite"])
+      expect(lumine.keymaps.findKeyBindings({ target: element, command: `bib-finder:${name}` }))
+        .withContext(name)
+        .toEqual([]);
+    for (const name of ["open-source-1"])
+      expect(
+        lumine.keymaps.findKeyBindings({ target: element, command: `bib-finder:${name}` }).length,
+      )
+        .withContext(name)
+        .toBeGreaterThan(0);
+  });
+
   it("does not offer document actions in an empty workspace", () => {
     editor.destroy();
     for (const command of commands)
