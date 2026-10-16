@@ -24,11 +24,14 @@ To install `bib-finder` search for it in the Install pane of the Lumine settings
 
 Commands available in `lumine-workspace`:
 
-- `bib-finder:cite`: open citation list,
-- `bib-finder:cite-from-local`: open citation list from local `.bib` files only,
-- `bib-finder:cite-from-source-N`: open citation list from source no. N,
 - `bib-finder:open-source-N`: open source no. N bib file,
 - `bib-finder:clear-recent`: forget the recently used entries.
+
+Commands available in `lumine-text-editor:not([mini]):not([readonly]), .bib-finder`:
+
+- `bib-finder:cite`: open the citation list or close the current list,
+- `bib-finder:cite-from-local`: open the citation list from local `.bib` files only,
+- `bib-finder:cite-from-source-N`: open the citation list from source no. N.
 
 Commands available in `.bib-finder`:
 

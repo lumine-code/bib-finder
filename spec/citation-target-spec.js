@@ -45,28 +45,31 @@ describe("bib-finder citation command target", () => {
     await main.selectList.runAction("bib-finder:insert-cite");
   }
 
-  it("uses the active document rather than a focused mini editor", async () => {
+  it("does not insert into the document from an unrelated mini editor", async () => {
     const { editor: mini, element } = embeddedEditor(true);
     mini.setText("Prompt");
     expect(lumine.workspace.getFocusedTextEditor()).toBe(mini);
 
-    await cite(element);
+    expect(lumine.commands.canDispatch(element, "bib-finder:cite")).toBe(false);
+    await lumine.commands.dispatch(element, "bib-finder:cite");
 
-    expect(documentEditor.getText()).toBe("Document: \\cite{reference}");
-    expect(mini.getText()).toBe("Prompt");
-    documentEditor.undo();
+    expect(main.toggle).not.toHaveBeenCalled();
     expect(documentEditor.getText()).toBe("Document: ");
+    expect(mini.getText()).toBe("Prompt");
   });
 
-  it("uses the active document when a workspace panel has focus", async () => {
+  it("does not open a citation list while an unrelated workspace panel has focus", async () => {
     const button = document.createElement("button");
     workspaceElement.appendChild(button);
     button.focus();
     expect(lumine.workspace.getFocusedTextEditor()).toBeNull();
 
-    await cite(button, "bib-finder:cite-from-local");
+    expect(lumine.commands.canDispatch(button, "bib-finder:cite-from-local")).toBe(false);
+    await lumine.commands.dispatch(button, "bib-finder:cite-from-local");
 
-    expect(documentEditor.getText()).toBe("Document: \\cite{reference}");
+    expect(main.toggle).not.toHaveBeenCalled();
+    expect(documentEditor.getText()).toBe("Document: ");
+    button.remove();
   });
 
   it("keeps a non-mini command origin ahead of the active pane editor", async () => {
@@ -80,5 +83,15 @@ describe("bib-finder citation command target", () => {
 
     expect(origin.getText()).toBe("Origin: \\cite{reference}");
     expect(documentEditor.getText()).toBe("Document: ");
+  });
+
+  it("can close its own list without replacing the captured citation target", async () => {
+    await lumine.commands.dispatch(documentEditor.getElement(), "bib-finder:cite");
+    const query = main.selectList.getQueryEditor().getElement();
+    expect(main.selectListHost.isVisible()).toBe(true);
+    expect(lumine.commands.canDispatch(query, "bib-finder:cite")).toBe(true);
+    await lumine.commands.dispatch(query, "bib-finder:cite");
+    expect(main.selectListHost.isVisible()).toBe(false);
+    expect(main.targetEditor).toBe(documentEditor);
   });
 });
