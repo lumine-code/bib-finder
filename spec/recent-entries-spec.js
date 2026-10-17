@@ -62,6 +62,27 @@ describe("bib-finder recent entries", () => {
     return main.selectList;
   }
 
+  it("keeps the query and selected row without loading again when recent history changes", async () => {
+    const list = await showList();
+    list.setQuery("t");
+    await lumine.views.getNextUpdatePromise();
+    const item = entry("stng51");
+    await list.selectItem(item);
+    const reload = spyOn(list, "reload").and.callThrough();
+    const load = spyOn(main, "loadEntries").and.callThrough();
+    const loading = spyOn(list, "setLoadingState").and.callThrough();
+
+    await main.workspaceState.update("recentlyUsed", [entry("fhck07").id]);
+    await list.recordRecentItem(item);
+    await lumine.views.getNextUpdatePromise();
+
+    expect(list.getQuery()).toBe("t");
+    expect(list.getSelectedItem()).toBe(item);
+    expect(reload).not.toHaveBeenCalled();
+    expect(load).not.toHaveBeenCalled();
+    expect(loading).not.toHaveBeenCalled();
+  });
+
   it("keeps the entries it inserted at the top, ruled off from the rest", async () => {
     await main.selectList.recordRecentItem(entry("stng51"));
 
