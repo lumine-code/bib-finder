@@ -137,7 +137,10 @@ describe("bib-finder item actions", () => {
     await main.selectList.selectNone();
 
     let actions = main.selectList.getAvailableActions();
-    expect(actions.map((action) => action.command)).toEqual(["bib-finder:rebuild-cache"]);
+    expect(actions.map((action) => action.command)).toEqual([
+      "bib-finder:rebuild-cache",
+      "select-list:toggle-keep-open",
+    ]);
     expect(actions[0].context).toBe("dialog");
     expect(actions[0].enabled).toBe(true);
 
@@ -147,6 +150,7 @@ describe("bib-finder item actions", () => {
     expect(clear.context).toBe("dialog");
     expect(actions.map((action) => action.command)).toEqual([
       "bib-finder:rebuild-cache",
+      "select-list:toggle-keep-open",
       "select-list:clear-recents",
     ]);
   });
