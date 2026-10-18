@@ -1,9 +1,9 @@
 {
   "title": "bib-finder",
   "description": "Search local BibTeX entries before inserting a citation.",
-  "recordedOn": "2026-10-14",
-  "sourceRevision": "f3941e696adf477258be9496b39c3a130ddcc1eb",
-  "themeSourceRevision": "7fbd047a87ecf1367c896b19ff270cdc28d319f7",
+  "recordedOn": "2026-10-18",
+  "sourceRevision": "45461c5fd4c0c06b6fa6858efacc5dbea30f32dc",
+  "themeSourceRevision": "45b22049e87256e9327beb0b350e67fe81d7fc81",
   "mode": "normal",
   "fontSettings": "default",
   "scenario": "demo.js",
@@ -11,8 +11,8 @@
   "environment": {
     "platform": "win32",
     "arch": "x64",
-    "electron": "44.7.0",
-    "chrome": "152.0.7977.130",
+    "electron": "44.9.0",
+    "chrome": "152.0.7977.167",
     "devicePixelRatio": 1,
     "locale": "en-GB",
     "fontFamily": "Fira Code, Menlo, DejaVu Sans Mono, Consolas, monospace",
@@ -21,34 +21,35 @@
   },
   "viewport": { "width": 1100, "height": 570 },
   "cornerRadius": 10,
+  "privacy": { "version": 1, "location": "neutral", "textChecked": true },
   "sources": {
     "editor": {
-      "revision": "8be8f86075ad93df038610d82b3ac6d99329957d",
-      "dirty": true,
-      "workingTreeHash": "0a9458f6e3959fe7a52b2fec76abef27dcbaa9792f192b81ac1e3f6b2be82009"
+      "revision": "10950c83cb6d964aadbcf4036af67c6484c1341d",
+      "dirty": false,
+      "workingTreeHash": "4f53cda18c2baa0c0354bb5f9a3ecbe5ed12ab4d8e11ba873c2f11161202b945"
     },
     "package": {
-      "revision": "f3941e696adf477258be9496b39c3a130ddcc1eb",
+      "revision": "45461c5fd4c0c06b6fa6858efacc5dbea30f32dc",
       "dirty": false,
       "workingTreeHash": "4f53cda18c2baa0c0354bb5f9a3ecbe5ed12ab4d8e11ba873c2f11161202b945"
     },
     "bib-finder": {
-      "revision": "f3941e696adf477258be9496b39c3a130ddcc1eb",
+      "revision": "45461c5fd4c0c06b6fa6858efacc5dbea30f32dc",
       "dirty": false,
       "workingTreeHash": "4f53cda18c2baa0c0354bb5f9a3ecbe5ed12ab4d8e11ba873c2f11161202b945"
     },
     "language-bibtex": {
-      "revision": "6c71db92e51ef66adb17ef998a34fd8c82b6923b",
+      "revision": "3d5ee5b1cbf604703fb937c1302effa756a024b1",
       "dirty": false,
       "workingTreeHash": "4f53cda18c2baa0c0354bb5f9a3ecbe5ed12ab4d8e11ba873c2f11161202b945"
     },
     "language-latex": {
-      "revision": "64e59168e7677cd0547f5cf32ffc7ad8cff617c3",
+      "revision": "6578cb61d770a4e60d6d0eb031c9e67f8e647a3f",
       "dirty": false,
       "workingTreeHash": "4f53cda18c2baa0c0354bb5f9a3ecbe5ed12ab4d8e11ba873c2f11161202b945"
     },
     "one-theme": {
-      "revision": "7fbd047a87ecf1367c896b19ff270cdc28d319f7",
+      "revision": "45b22049e87256e9327beb0b350e67fe81d7fc81",
       "dirty": false,
       "workingTreeHash": "4f53cda18c2baa0c0354bb5f9a3ecbe5ed12ab4d8e11ba873c2f11161202b945"
     }
@@ -69,7 +70,7 @@
       "label": "Search local BibTeX entries before inserting a citation.",
       "width": 1100,
       "height": 570,
-      "sha256": "9ad4bda07fad842f760d2ad8feeae151056590724cfe7eea40cf40911f4cbf97"
+      "sha256": "4bf1a2e6f22b67d2a84b7fce3dda8dbb61c202c7791439584a3d0c76cbc6fa18"
     }
   ]
 }
