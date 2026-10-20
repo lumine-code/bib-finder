@@ -90,8 +90,7 @@ describe("bib-finder item actions", () => {
     expect(summaryStyle.overflowWrap).toBe("anywhere");
     expect(getComputedStyle(row.querySelector(".source-line")).whiteSpace).toBe("nowrap");
 
-    main.selectList.getQueryEditor().setText("variant=american");
-    await lumine.views.getNextUpdatePromise();
+    await main.selectList.setQuery("variant=american");
     expect(main.selectList.getFilteredItems()).toEqual([item]);
     expect(main.selectList.getElement().querySelector("li").textContent).not.toContain(
       "variant=american",

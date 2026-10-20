@@ -196,8 +196,7 @@ describe("bib-finder", () => {
 
       await mainModule.selectList.setItems(mainModule.items);
       await mainModule.selectListHost.show();
-      mainModule.selectList.getQueryEditor().setText("deliberately long metadata");
-      await lumine.views.getNextUpdatePromise();
+      await mainModule.selectList.setQuery("deliberately long metadata");
       expect(mainModule.selectList.getFilteredItems().map((item) => item.key)).toEqual([
         "westfahl:space",
       ]);
