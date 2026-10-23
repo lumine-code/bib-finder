@@ -315,10 +315,11 @@ describe("bib-finder", () => {
     it("does not publish or restore cache after a delayed update outlives deactivation", async () => {
       const response = deferred();
       const sourcePath = delaySource(1);
-      interceptReads(new Map([[sourcePath, response]]));
+      const reads = interceptReads(new Map([[sourcePath, response]]));
       const list = mainModule.selectList;
       const setItems = spyOn(list, "setItems").and.callThrough();
       const pending = mainModule.update(1);
+      await conditionPromise(() => reads.calls.allArgs().some(([file]) => file === sourcePath));
       await lumine.packages.deactivatePackage("bib-finder");
       response.resolve(BOOK_A);
 
@@ -333,14 +334,16 @@ describe("bib-finder", () => {
       const newer = deferred();
       const firstPath = delaySource(1);
       const secondPath = delaySource(2);
-      interceptReads(
+      const reads = interceptReads(
         new Map([
           [firstPath, older],
           [secondPath, newer],
         ]),
       );
       const first = mainModule.update(1);
+      await conditionPromise(() => reads.calls.allArgs().some(([file]) => file === firstPath));
       const second = mainModule.update(2);
+      await conditionPromise(() => reads.calls.allArgs().some(([file]) => file === secondPath));
       newer.resolve("@book{newest, title={Newest}}");
       await second;
       older.resolve(BOOK_A);
@@ -354,8 +357,9 @@ describe("bib-finder", () => {
     it("discards a pending load after its configured source changes", async () => {
       const response = deferred();
       const sourcePath = delaySource(1);
-      interceptReads(new Map([[sourcePath, response]]));
+      const reads = interceptReads(new Map([[sourcePath, response]]));
       const pending = mainModule.loadEntries(1);
+      await conditionPromise(() => reads.calls.allArgs().some(([file]) => file === sourcePath));
       const replacementPath = path.join(tempDir, "replacement.bib");
       fs.writeFileSync(replacementPath, "@book{replacement, title={Replacement}}");
       lumine.config.set("bib-finder.path-1", replacementPath);
@@ -370,9 +374,12 @@ describe("bib-finder", () => {
     it("does not emit a delayed missing-file warning after deactivation", async () => {
       const response = deferred();
       const sourcePath = delaySource(1);
-      interceptReads(new Map([[sourcePath, response]]));
+      const reads = interceptReads(new Map([[sourcePath, response]]));
       const error = spyOn(lumine.notifications, "addError");
       const pending = mainModule.cache(1);
+      // Parser loading yields before readFile. Retire an actual in-flight read,
+      // not an operation that never consumed this deferred fixture promise.
+      await conditionPromise(() => reads.calls.allArgs().some(([file]) => file === sourcePath));
       await lumine.packages.deactivatePackage("bib-finder");
       response.reject(Object.assign(new Error("Missing source"), { code: "ENOENT" }));
       await pending;
