@@ -41,7 +41,7 @@
     }
   },
   "dependencies": {
-    "@lumine-code/bibtex-parse": "github:lumine-code/bibtex-parse#58514ab3f7034c3d860ae74beb6fde2e9a0a2ae6"
+    "@lumine-code/bibtex-parse": "github:lumine-code/bibtex-parse#cacef9c7d6220fdc25f4b27f122c99d9d21feaf4"
   },
   "configSchema": {
     "bibLocal": {
